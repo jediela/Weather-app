@@ -13,22 +13,28 @@ let weather = {
     // Display weather function 
     displayWeather: function(data){
         const {name} = data;
+        const {country} = data.sys; 
         const {icon, description} = data.weather[0];
-        const {temp, humidity} = data.main;
-        const{speed} = data.wind;
+        const {temp, feels_like, humidity} = data.main;
+        const {speed} = data.wind;
         
         // Round the temperature
         const roundedTemp = Math.round(temp);
+        const roundedFeels = Math.round(feels_like);
 
-        document.querySelector(".city").innerText = "Weather in " + name;
+        document.querySelector(".city").innerText = "Weather in " + name + ", " + country;
         document.querySelector(".icon").src = "https://openweathermap.org/img/wn/" + icon + ".png";
         document.querySelector(".description").innerText = description;
         document.querySelector(".temp").innerText = roundedTemp + "°C";
+        document.querySelector(".feels").innerText = "Feels like: "+ roundedFeels + "°C";
         document.querySelector(".humidity").innerText = "Humidity: " + humidity + "%";
         document.querySelector(".wind").innerText = "Wind Speed: " + speed + "km/h";
-        
-       document.querySelector(".weather").classList.remove("loading");
-       document.body.style.backgroundImage = "url('https://source.unsplash.com/2000x1000/?" + name + "')"
+
+        // Clear the search bar
+        document.querySelector(".search-bar").value = ""; 
+
+        document.querySelector(".weather").classList.remove("loading");
+        document.body.style.backgroundImage = "url('https://source.unsplash.com/2000x1000/?" + name + "')"
     },
 
     // Search bar
@@ -46,6 +52,7 @@ let weather = {
     document.querySelector(".search-bar").addEventListener("keyup", function() {
         if(event.key == "Enter"){
             weather.search();
+
         }
     });
 
